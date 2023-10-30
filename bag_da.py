@@ -67,31 +67,25 @@ class Bag:
                 """
         self._da = DynamicArray()
 
-    def equal(self, second_bag: "Bag") -> bool: #passes the prescribed test
-        """
-                Compare the contents of this bag with another bag and return True if they are equal,
-                otherwise return False. This method meets the specified requirements.
-                """
+    def equal(self, second_bag: "Bag") -> bool:
         if self.size() != second_bag.size():
             return False
 
-        # Create a dictionary to count the occurrences of each value in the first bag
-        value_counts = {}
+        # Create a DynamicArray to store the elements in the first bag
+        value_counts = DynamicArray()
         for i in range(self.size()):
-            value = self._da.get_at_index(i)
-            if value in value_counts:
-                value_counts[value] += 1
-            else:
-                value_counts[value] = 1
+            value_counts.append(self._da.get_at_index(i))
 
         # Check if the second bag has the same number of occurrences for each value
         for i in range(second_bag.size()):
-            value = second_bag._da.get_at_index(i)  # Accessing the internal DynamicArray
-            if value in value_counts:
-                value_counts[value] -= 1
-                if value_counts[value] == 0:
-                    del value_counts[value]
-            else:
+            value = second_bag._da.get_at_index(i)
+            found = False
+            for j in range(value_counts.length()):
+                if value == value_counts.get_at_index(j):
+                    value_counts.remove_at_index(j)
+                    found = True
+                    break
+            if not found:
                 return False
 
         return True

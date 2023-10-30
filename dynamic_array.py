@@ -129,15 +129,14 @@ DO NOT CHANGE THIS METHOD IN ANY WAY"""
         self._data.set(index, value)
         self._size += 1
 
-    def remove_at_index(self, index: int) -> None: #passes the first two prescribed tests, running into some incorrect results for the 3rd test,
-                                                    #but passes the fourth test--so maybe there is an issue with the way you're setting up
-                                                    #the third test. Or maybe not, and the method needs some modification.
+    def remove_at_index(self, index: int) -> None:
         if index < 0 or index >= self._size:
             raise DynamicArrayException("Invalid index")
 
-        # Check if capacity reduction is needed
-        if (self._capacity > 10 and self._size <= self._capacity // 4):
-            new_capacity = max(self._capacity // 2, 10)
+        if self._capacity > 10 and self._size < self._capacity // 4:
+            new_capacity = self._size * 2  # Double the size
+            if new_capacity < 10:  # Ensure the new capacity is at least 10
+                new_capacity = 10
             self.resize(new_capacity)
 
         # Shift elements to the left to fill the removed element's position
