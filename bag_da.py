@@ -1,3 +1,10 @@
+# Name: William Clements
+# OSU Email: clemenwi@oregonstate.edu
+# Course: CS261 - Data Structures
+# Assignment: 2
+# Due Date:10/30/2023
+# Description: Bag ADT
+
 from dynamic_array import *
 
 class Bag:
@@ -68,6 +75,14 @@ class Bag:
         self._da = DynamicArray()
 
     def equal(self, second_bag: "Bag") -> bool:
+        """
+            Compare the bag with another bag and determine if they are equal.
+
+            Parameters:
+            - second_bag (Bag): The second bag to compare with the current bag.
+
+            Returns:
+            - bool: True if the bags are equal, otherwise, False."""
         if self.size() != second_bag.size():
             return False
 
@@ -91,10 +106,17 @@ class Bag:
         return True
 
     def __iter__(self): #passed the prescribed test
+        """
+                Create an iterator for looping through the bag's elements."""
         self._iterator_index = 0  # Reset the iterator index when starting a new iteration
         return self
 
     def __next__(self): #passed the prescribed test
+        """
+                Obtain the next element and advance the iterator.
+
+                Raises:
+                - StopIteration: When there are no more elements to iterate through."""
         if self._iterator_index < self._da.length():
             item = self._da.get_at_index(self._iterator_index)
             self._iterator_index += 1

@@ -1,3 +1,10 @@
+# Name: William Clements
+# OSU Email: clemenwi@oregonstate.edu
+# Course: CS261 - Data Structures
+# Assignment: 2
+# Due Date:10/30/2023
+# Description: Dynamic Array implementation
+
 from static_array import StaticArray
 
 class DynamicArrayException(Exception):
@@ -104,6 +111,18 @@ DO NOT CHANGE THIS METHOD IN ANY WAY"""
         self._capacity = new_capacity
 
     def append(self, value: object) -> None: #passes the prescribed tests
+        """
+            Appends the provided value to the dynamic array.
+
+            Parameters:
+            - value (object): The value to append to the dynamic array.
+
+            If the internal storage is full (the size equals the capacity), this method
+            doubles the capacity of the dynamic array to accommodate the new element.
+
+            Returns:
+            None
+            """
         if self._size == self._capacity:
             # If the internal storage is full, double its capacity
             new_capacity = self._capacity * 2 if self._capacity > 0 else 1
@@ -113,6 +132,25 @@ DO NOT CHANGE THIS METHOD IN ANY WAY"""
         self._size += 1
 
     def insert_at_index(self, index: int, value: object) -> None: #passes the prescribed tests
+        """
+            Inserts the given value at the specified index in the dynamic array.
+
+            Parameters:
+            - index (int): The index where the value should be inserted.
+            - value (object): The value to insert in the dynamic array.
+
+            If the internal storage is full (the size equals the capacity), this method
+            doubles the capacity of the dynamic array to accommodate the new element.
+            The elements at and after the specified index are shifted to make space for
+            the new value.
+
+            Raises:
+            - DynamicArrayException: If the provided index is invalid (negative or
+              greater than the current size).
+
+            Returns:
+            None
+            """
         if index < 0 or index > self._size:
             raise DynamicArrayException("Invalid index")
 
@@ -130,6 +168,27 @@ DO NOT CHANGE THIS METHOD IN ANY WAY"""
         self._size += 1
 
     def remove_at_index(self, index: int) -> None:
+        """
+            Removes the element at the specified index in the dynamic array.
+
+            Parameters:
+            - index (int): The index of the element to remove.
+
+            If the size of the dynamic array is strictly less than 1/4 of its current
+            capacity and the current capacity is greater than 10, this method reduces
+            the capacity to twice the number of current elements, ensuring that the
+            final capacity is at least 10.
+
+            The elements after the specified index are shifted to fill the removed element's
+            position, and the size is decremented.
+
+            Raises:
+            - DynamicArrayException: If the provided index is invalid (negative or
+              greater than or equal to the current size).
+
+            Returns:
+            None
+            """
         if index < 0 or index >= self._size:
             raise DynamicArrayException("Invalid index")
 
@@ -147,6 +206,21 @@ DO NOT CHANGE THIS METHOD IN ANY WAY"""
         self._size -= 1
 
     def slice(self, start_index: int, size: int) -> 'DynamicArray': #passes the prescribed tests.
+        """
+            Create a new dynamic array containing a slice of elements from the original array.
+
+            Slices the dynamic array from the 'start_index' to 'start_index + size' (excluding the end index).
+
+            Args:
+            - start_index (int): The starting index for the slice.
+            - size (int): The number of elements to include in the slice.
+
+            Returns:
+            - DynamicArray: A new dynamic array containing the sliced elements.
+
+            Raises:
+            - DynamicArrayException: If 'start_index' is out of range or 'size' is negative or the slice extends beyond the dynamic array's size.
+            """
         if start_index < 0 or start_index >= self._size or size < 0:
             raise DynamicArrayException("Invalid start index or size")
 
@@ -163,12 +237,35 @@ DO NOT CHANGE THIS METHOD IN ANY WAY"""
         return slice_array
 
     def merge(self, second_da: 'DynamicArray') -> None: #passes the prescribed tests
+        """
+            Merge the elements of another DynamicArray into the current DynamicArray.
+
+            Appends each element from the provided 'second_da' DynamicArray to the end of the current DynamicArray.
+
+            Args:
+            - second_da (DynamicArray): The DynamicArray whose elements will be merged into the current DynamicArray.
+
+            Returns:
+            - None"""
         # Loop through the elements in the second DynamicArray
         for i in range(second_da.length()):
             # Append each element to the current DynamicArray
             self.append(second_da.get_at_index(i))
 
     def map(self, map_func) -> 'DynamicArray': #passes both prescribed tests
+        """
+            Create a new DynamicArray by applying a mapping function to each element.
+
+            Applies the provided 'map_func' to each element of the current DynamicArray and stores the results
+            in a new DynamicArray, which is then returned.
+
+            Args:
+            - map_func (function): The mapping function to be applied to each element in the current DynamicArray.
+                This function should take one argument, which is an element from the current DynamicArray, and return
+                the transformed value.
+
+            Returns:
+            - DynamicArray: A new DynamicArray containing the mapped values."""
         # Create a new DynamicArray to store the mapped values
         mapped_array = DynamicArray()
         for i in range(self.length()):
@@ -177,6 +274,19 @@ DO NOT CHANGE THIS METHOD IN ANY WAY"""
         return mapped_array
 
     def filter(self, filter_func): #passes the prescribed tests
+        """
+            Create a new DynamicArray by filtering elements based on a given predicate function.
+
+            Filters the elements of the current DynamicArray based on the provided 'filter_func' and stores
+            the elements that satisfy the filter criteria in a new DynamicArray, which is then returned.
+
+            Args:
+            - filter_func (function): The filtering function used to determine whether an element should be included
+                in the filtered DynamicArray. This function should take one argument (an element from the current DynamicArray)
+                and return a Boolean value (True if the element should be included, False if it should be excluded).
+
+            Returns:
+            - DynamicArray: A new DynamicArray containing the elements that satisfy the filter criteria."""
         # Create a new DynamicArray to store the filtered values
         filtered_array = DynamicArray()
         for i in range(self.length()):
@@ -188,7 +298,20 @@ DO NOT CHANGE THIS METHOD IN ANY WAY"""
         return filtered_array
 
     def reduce(self, reduce_func, initializer=None): #passes the prescribed tests
-        if self.is_empty(): #replace the is_empty built-in function with some code that serves same purpose
+        """
+            Create a new DynamicArray by filtering elements based on a given predicate function.
+
+            Filters the elements of the current DynamicArray based on the provided 'filter_func' and stores
+            the elements that satisfy the filter criteria in a new DynamicArray, which is then returned.
+
+            Args:
+            - filter_func (function): The filtering function used to determine whether an element should be included
+                in the filtered DynamicArray. This function should take one argument (an element from the current DynamicArray)
+                and return a Boolean value (True if the element should be included, False if it should be excluded).
+
+            Returns:
+            - DynamicArray: A new DynamicArray containing the elements that satisfy the filter criteria."""
+        if self.is_empty():
             return initializer
 
         if initializer is None:
@@ -205,6 +328,20 @@ DO NOT CHANGE THIS METHOD IN ANY WAY"""
         return accumulator
 
 def find_mode(arr: DynamicArray) -> (DynamicArray, int): #passes the prescribed test
+    """
+        Find the mode(s) and frequency of occurrence in a DynamicArray.
+
+        Calculates the mode(s) and their frequency of occurrence in the provided 'arr' DynamicArray.
+        The mode is the element(s) that appear most frequently in the array. If there are multiple modes,
+        all of them are returned. The frequency represents how many times the mode(s) appear in the array.
+
+        Args:
+        - arr (DynamicArray): The DynamicArray to find the mode(s) in.
+
+        Returns:
+        - A tuple containing two elements:
+          1. A DynamicArray of mode(s), where each mode appears most frequently in the input array.
+          2. An integer representing the frequency of occurrence of the mode(s) in the input array."""
     if arr.is_empty():
         return DynamicArray(), 0
 
